@@ -3,35 +3,62 @@ const readline = require("readline-sync");
 let tareas = [];
 
 function agregarTarea() {
-  const indicador = readline.question("Indicador de tarea:");
-  const descripcion = readline.question("Descripcion de la tarea:");
+  return new Promise((resolve, reject) => {
+    try {
+      constindicador = readline.question("Indicador de tarea:");
+      const descripcion = readline.question("Descripcion de la trarea:");
 
-  const tarea = {
-    indicador,
-    descripcion,
-    completada: false,
-  };
-  tareas.push(tarea);
-  console.log("Trea añadida:", tarea);
+      const tarea = {
+        indicador,
+        descripcion,
+        completada: false,
+      };
+      tareas.push(tarea);
+      console.log("Tarea añadida:", tarea);
+      resolve(tarea);
+    } catch (error) {
+      reject(error);
+    }
+  });
 }
 
 function eliminarTarea() {
-  const indicadorEliminar = readline.question("Indicador de tarea a eliminar:");
-  tareas = tareas.filter((tarea) => tarea.indicador !== indicadorEliminar);
-  console.log("Tarea eliminada");
+  return new Promise((resolve, rejext) => {
+    try {
+      const indicadorEliminar = redline.question(
+        "Indicador de tarea a eliminar"
+      );
+      tareas = tareas.filter((tarea) => tarea.indicador !== indicadorEliminar);
+      console.log("Tarea eliminada");
+      resolve();
+    } catch (error) {
+      reject(error);
+    }
+  });
 }
 
 function completarTarea() {
-  const indicadorCompletar = readline.question(
-    "Indicador de tarea completada:"
-  );
-  const tarea = tareas.find((tarea) => tarea.indicator === indicadorCompletar);
-  if (tarea) {
-    tarea.completada = true;
-    console.log("Tarea marcada como completada:", tarea);
-  } else {
-    console.log("No se encontro ninguna tarea con ese indicador");
-  }
+  return new Promise((resolve, reject) => {
+    try {
+      const indicadorCompletar = readline.question(
+        "Indicador de tarea completada:"
+      );
+      const tarea = tareas.find(
+        (tarea) => tarea.indicator === indicadorCompletar
+      );
+
+      if (tarea) {
+        tarea.completada = true;
+        console.log("Tarea marcada como completada:", tarea);
+        resolve(tarea);
+      } else {
+        console.log("No se encontro ninguna tarea con ese indicador");
+        resolve(null);
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
 }
 
 function mostrarTareas() {
@@ -44,7 +71,7 @@ function mostrarTareas() {
   console.log(`\n`);
 }
 
-function menu() {
+async function menu() {
   while (true) {
     console.log("\n1. Agregar tarea");
     console.log("2. Eliminar tarea");
@@ -56,13 +83,25 @@ function menu() {
 
     switch (opcion) {
       case "1":
-        agregarTarea();
+        try {
+          await agregarTarea();
+        } catch (error) {
+          console.error("Error al agregar tarea:", error);
+        }
         break;
       case "2":
-        eliminarTarea();
+        try {
+          await eliminarTarea();
+        } catch (error) {
+          console.log("Error al eliminar tarea", error);
+        }
         break;
       case "3":
-        completarTarea();
+        try {
+          await completarTarea();
+        } catch (error) {
+          console.log("Error al completar tarea", error);
+        }
         break;
       case "4":
         mostrarTareas();
@@ -75,4 +114,12 @@ function menu() {
     }
   }
 }
-menu();
+async function iniciarPrograma() {
+  try {
+    await menu();
+  } catch (error) {
+    console.error("Error en el programa:", error);
+  }
+}
+
+iniciarPrograma();
