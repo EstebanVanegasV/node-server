@@ -1,5 +1,8 @@
 const express = require("express");
 const listEditRouter = express.Router();
+const middlewares = require("./middlewares");
+
+listEditRouter.use(middlewares.validateEditRequest);
 
 listEditRouter.post("/crear", (req, res) => {
   res.json({ mensaje: "Tarea creada exitosamente" });
