@@ -21,7 +21,7 @@ listEditRouter.post("/login", (req, res) => {
     return res.status(401).json({ error: "Credenciales invalidas" });
   }
   const token = jwt.sing({ username }, process.env.JWT_SECRET, {
-    expresIn: "1h",
+    expiresIn: "1h",
   });
   res.json({ token });
 });
